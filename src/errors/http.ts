@@ -1,3 +1,5 @@
+import { ZodError } from 'zod';
+
 export class HttpError extends Error {
   httpCode: number;
   data?: Record<string, any>;
@@ -10,7 +12,10 @@ export class HttpError extends Error {
   }
 
   static fromError(error: Error): HttpError {
-    const result = new HttpError(error.message);
+    const result =
+      error instanceof ZodError
+        ? new HttpError('Invalid request', 400, { issues: error.issues })
+        : new HttpError(error.message);
 
     result.name = error.name;
     result.stack = error.stack;

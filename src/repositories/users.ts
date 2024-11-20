@@ -10,13 +10,13 @@ export class User extends Model {
     posts: HasMany<User, Post>;
   };
 
-  id!: number;
-  type!: UserType;
-  name!: string;
-  email!: string;
-  passwordHash!: string;
-  createdAt!: Date;
-  updatedAt!: Date;
+  declare id: number;
+  declare type: UserType;
+  declare name: string;
+  declare email: string;
+  declare passwordHash: string;
+  declare createdAt: Date;
+  declare updatedAt: Date;
 
   static associate(models: SequelizeModels): void {
     this.hasMany(models.posts, { foreignKey: 'authorId', as: 'posts' });

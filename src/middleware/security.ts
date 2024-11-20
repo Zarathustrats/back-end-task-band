@@ -25,7 +25,7 @@ export function initTokenValidationRequestHandler(sequelizeClient: SequelizeClie
       if (!token) {
         throw new UnauthorizedError('AUTH_TOKEN_MISSING');
       }
-
+      
       if (!isValidToken(token)) {
         throw new UnauthorizedError('AUTH_TOKEN_INVALID');
       }
@@ -37,7 +37,6 @@ export function initTokenValidationRequestHandler(sequelizeClient: SequelizeClie
         throw new UnauthorizedError('AUTH_TOKEN_INVALID');
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       (req as any).auth = {
         token,
         user,
@@ -47,14 +46,7 @@ export function initTokenValidationRequestHandler(sequelizeClient: SequelizeClie
     } catch (error) {
       return next(error);
     }
-  };
-}
-
-// NOTE(roman): assuming that `tokenValidationRequestHandler` is placed before
-export function initAdminValidationRequestHandler(): RequestHandler {
-  return function adminValidationRequestHandler(req, res, next): void {
-    throw new NotImplementedError('ADMIN_VALIDATION_NOT_IMPLEMENTED_YET');
-  };
+  } as RequestHandler;
 }
 
 export interface RequestAuth {
