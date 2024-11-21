@@ -9,7 +9,7 @@ import { BadRequestError, UnauthorizedError } from '../errors';
 import { hashPassword, generateToken } from '../security';
 import { initTokenValidationRequestHandler, RequestAuth } from '../middleware/security';
 import { UserType } from '../constants';
-import { createUserRequestBodySchema } from '../validation';
+import { createUserRequestBodySchema, loginUserRequestSchema } from '../validation';
 
 export function initUsersRouter(sequelizeClient: SequelizeClient): Router {
   const router = Router({ mergeParams: true });
@@ -57,7 +57,7 @@ function initLoginUserRequestHandler(sequelizeClient: SequelizeClient): RequestH
     const { models } = sequelizeClient;
 
     try {
-      const { email, password } = req.body as { email: string; password: string };
+      const { email, password } = loginUserRequestSchema.parse(req.body);
 
       const user = (await models.users.findOne({
         attributes: ['id', 'passwordHash'],
